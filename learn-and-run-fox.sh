@@ -1,8 +1,13 @@
-#!/bin/bash -x
+#!/bin/bash 
 
-WORKDIR=~/Tools/AKSW
-PROJECT=FOX
-GITHUB=https://github.com/AKSW
+#PROJECT=FOX
+#GITHUB=https://github.com/AKSW
+
+#WORKDIR=~/Tools/AKSW
+#if [ ! -e $WORKDIR ];then
+#    WORKDIR=./
+#fi
+#cd $WORKDIR
 
 XMX=${XMX:-8G}
 
