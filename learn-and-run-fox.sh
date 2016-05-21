@@ -1,15 +1,14 @@
-#!/bin/bash 
+#!/bin/bash -x
 
 #PROJECT=FOX
 #GITHUB=https://github.com/AKSW
+#GITHUB=https://github.com/DrSnowbird
 
-#WORKDIR=~/Tools/AKSW
-#if [ ! -e $WORKDIR ];then
-#    WORKDIR=./
-#fi
-#cd $WORKDIR
-
+#### ---- Java runtime Memory: ----
 XMX=${XMX:-8G}
+
+### --- FOX JAR ---
+FOX_JAR=fox-2.3.0-jar-with-dependencies.jar
 
 #### ---- Supported Languages: de (default), en ----
 #LNG=${LNG:-de}
@@ -40,13 +39,14 @@ fi
 sed -i -e 's#training: false#training: true#g' 'fox.properties'
 
 #### ---- Training Corpus for Germany (default) ----
-#java -Xmx$XMX -cp fox-2.3.0-jar-with-dependencies.jar org.aksw.fox.FoxCLI -l$LNG -atrain -iinput/Wikiner/aij-wikiner-de-wp3.bz2 | tee $LOG_LEARN
-java -Xmx$XMX -cp fox-2.3.0-jar-with-dependencies.jar org.aksw.fox.FoxCLI -l$LNG -atrain -iinput/Wikiner/aij-wikiner-${LNG}-wp3.bz2 | tee $LOG_LEARN
+#java -Xmx8G -cp fox-2.3.0-jar-with-dependencies.jar org.aksw.fox.FoxCLI -len -atrain -iinput/Wikiner/aij-wikiner-en-wp3.bz2
+java -Xmx${XMX} -cp ${FOX_JAR} org.aksw.fox.FoxCLI -l${LNG} -atrain -iinput/Wikiner/aij-wikiner-${LNG}-wp3.bz2 | tee ${LOG_LEARN}
 
 #### ---- Switch FOX Properties "training: false" ----
 sed -i -e 's#training: true#training: false#g' 'fox.properties'
 
 #### ---- Run FOX:  ----
-java -Xmx$XMX -cp fox-2.3.0-jar-with-dependencies.jar org.aksw.fox.FoxRESTful -l$LNG | tee $LOG_RUN
+#java -Xmx8G -cp fox-2.3.0-jar-with-dependencies.jar org.aksw.fox.FoxRESTful -len
+java -Xmx${XMX} -cp ${FOX_JAR} org.aksw.fox.FoxRESTful -l${LNG} | tee ${LOG_RUN}
 
 
